@@ -48,7 +48,5 @@ void lista_libera(Lista *lista, tipo_erro *erro); // erro implement
 //  Verificar se um elemento tá presente na lista
 ListaBloco *lista_verifica_elem(Lista *lista, elem_lista *dado, tipo_erro *erro);
 
-//  Imprimir os dados de um bloco específico da lista
-// void lista_bloco_print(ListaBloco *listabloco, tipo_erro *erro);
 
 #endif
