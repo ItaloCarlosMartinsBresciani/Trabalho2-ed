@@ -7,33 +7,34 @@
 
 // Define o tipo "elem_lista" como char
 typedef char elem_lista;
-typedef char tipo_do_bloco;
+typedef int tipo_do_bloco;
 
-#define QUANT 9 // definida a quantidade de tipos que cada bloco pode assumir 
+#define QUANT 9 // definida a quantidade de tipos que cada bloco pode assumir
 // No caso dos filmes: {1- Ação, 2- Aventura, 3- Comedia, 4 - Drama, 5- Ficcao, 6- Romance, 7- Suspense, 8 - Terror}
 
-typedef struct listabloco{
-    elem_lista *dado; // Ponteiro para os dados armazenados neste bloco
-    tipo_do_bloco *tipo;
-    int cont_ref; //contagem de referencias de cada bloco
-    struct listabloco *prox;
+typedef struct listabloco
+{
+    elem_lista *dado;   // nome do filme
+    tipo_do_bloco tipo; // genero
+    int cont_ref;       // contagem de quantas vezes o filme foi citado (usado na lista geral)
+    struct listabloco *prox, *ant;
 } ListaBloco;
 
-
-typedef struct lista {
+typedef struct lista
+{
     ListaBloco *inicio;
     ListaBloco *fim;
-    int vetor[QUANT]; //vetor que armazena as quantidades de elementos presentes na lista de cada tipo.
+    int vetor[QUANT]; // vetor que armazena as quantidades de elementos presentes na lista de cada tipo.
 } Lista;
 
 //  Inicializar uma nova lista
 Lista *lista_init(tipo_erro *erro);
 
 //  Adicionar um novo elemento na lista
-void lista_push(Lista *lista, elem_lista *dado, tipo_erro *erro);
+void lista_push(Lista *lista, elem_lista *dado, tipo_do_bloco *tipo, tipo_erro *erro);
 
 //  Remover e retornar o bloco do fim da lista
-ListaBloco *lista_pop(Lista *lista, tipo_erro *erro);
+ListaBloco *lista_pop(Lista *lista, elem_lista *dado, tipo_erro *erro);
 
 //  Verificar se a lista está vazia
 bool lista_vazia(Lista *lista, tipo_erro *erro); // erro implementado até aqui
