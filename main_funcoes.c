@@ -19,6 +19,7 @@ void limpar_tela()
     system("clear"); // Para Linux/macOS
 #endif
 }
+
 // Verifica se o filme do usuário já está no sistema
 void add_lista_geral(Arvore *arv_sist, elem_arv *filme, tipo_do_bloco *genero, tipo_erro *erro)
 {
@@ -45,69 +46,48 @@ void add_lista_geral(Arvore *arv_sist, elem_arv *filme, tipo_do_bloco *genero, t
     }
 }
 
-void criar_cadastro(Arvore *arv_sist, tipo_erro *erro)
+void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
 {
-    *erro = SUCESSO;
-    // int is_valid = 0;
-
-    printf("\n--- CADASTRO DE USUÁRIO ---\n");
-    char nome[TAM];
-
-    char *nome_copia = (char *)malloc(strlen(nome) + 1);
-    if (nome_copia == NULL)
-    {
-        *erro = ERRO_ALLOC;
-        printf("aqui erro aloca 1\n");
-        return;
-    }
 
     char filme[TAM];
     int genero;
-    // char n_usp_str[50];
     int total_filmes = 0;
-    int n_usp;
+    char filmes_str[TAM];
+    int is_valid = 0;
 
-    Lista *l_ord = lista_init(erro); // lista do usuário criada
-
-    // Entrada do Numero USP
-    // while (!is_valid)
-    //{
-    printf("\n--- INFORME O NÚMERO USP DO USUÁRIO ---\n");
-    scanf("%d", &n_usp);
-    getchar();
-    // fgets(n_usp_str, 50, stdin);
-    // n_usp_str[strcspn(n_usp_str, "\n")] = '\0';
-    // is_valid = 1; // Assume que é válido
-    // for (int i = 0; i < strlen(n_usp_str)+1; i++)
-    //     {
-    //         if (!isdigit(n_usp_str[i]))
-    //         {
-    //             is_valid = 0;
-    //             break;
-    //         }
-    //     }
-    //     if (!is_valid)
-    //     {
-    //         printf("Número USP inválido. Certifique-se de usar apenas números.\n");
-    //         printf("Pressione uma tecla para continuar.\n");
-    //         getchar();
-    //     }
-    // }
-    // int n_usp = atoi(n_usp_str);
-
-    // Entrada do nome
-
-    printf("\n--- INFORME O NOME DO USUÁRIO ---\n");
-    fgets(nome, TAM, stdin);
-    nome[strcspn(nome, "\n")] = '\0'; // Remove o '\n' do final
-    strcpy(nome_copia, nome);
-
-    while (total_filmes <= 0)
+    do
     {
         printf("Quantos filmes favoritos deseja cadastrar? ");
-        scanf("%d", &total_filmes);
-        getchar();
-    }
+        fgets(filmes_str, TAM, stdin);
+        filmes_str[strcspn(filmes_str, "\n")] = '\0'; // Remove o '\n' do final
+
+        is_valid = 1; // Assume que é válido
+
+        // Verifica se a entrada contém apenas dígitos
+        for (int i = 0; i < strlen(filmes_str); i++)
+        {
+            if (!isdigit(filmes_str[i]))
+            {
+                is_valid = 0; // Invalida se encontrar algo que não seja dígito
+                break;
+            }
+        }
+
+        if (is_valid)
+        {
+            total_filmes = atoi(filmes_str); // Converte para inteiro
+            if (total_filmes <= 0)
+            {
+                is_valid = 0; // Não aceita valores negativos ou zero
+            }
+        }
+
+        if (!is_valid)
+        {
+            printf("Entrada inválida. Insira apenas números positivos maiores que zero.\n");
+            printf("\n");
+        }
+    } while (!is_valid);
 
     // Entrada dos filmes
     for (int i = 0; i < total_filmes; i++)
@@ -116,7 +96,6 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro)
         if (p == NULL)
         {
             *erro = ERRO_ALLOC;
-            printf("aqui erro aloca 2\n");
             return;
         }
         else
@@ -131,7 +110,6 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro)
             if (p->dado == NULL)
             {
                 *erro = ERRO_ALLOC;
-                printf("aqui erro aloca 3\n");
                 free(p);
                 return;
             }
@@ -151,7 +129,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro)
                 printf("Escolha uma opção (1 a 8): ");
                 scanf("%d", &genero);
                 l_ord->vetor[genero - 1]++;
-                getchar();
+                getchar(); // limpa o buffer
             } while (genero < 1 || genero > 8);
 
             printf("\n");
@@ -160,6 +138,99 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro)
             add_lista_geral(arv_sist, p->dado, &p->tipo, erro);
         }
     }
+}
+
+void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o n_usp já existe
+{
+    *erro = SUCESSO;
+    int is_valid = 0;
+
+    printf("\n--- CADASTRO DE USUÁRIO ---\n");
+    char nome[TAM];
+
+    char *nome_copia = (char *)malloc(strlen(nome) + 1);
+    if (nome_copia == NULL)
+    {
+        *erro = ERRO_ALLOC;
+        return;
+    }
+
+    char n_usp_str[50];
+    int n_usp;
+
+    Lista *l_ord = lista_init(erro); // lista do usuário criada
+
+    // Entrada do Numero USP
+
+    do
+    {
+        printf("\n--- INFORME O NÚMERO USP DO USUÁRIO ---\n");
+        fgets(n_usp_str, sizeof(n_usp_str), stdin);
+        n_usp_str[strcspn(n_usp_str, "\n")] = '\0'; // Remove o '\n', se presente
+
+        is_valid = 1; // Assume que é válido
+
+        // Verifica se todos os caracteres são dígitos
+        for (int i = 0; i < strlen(n_usp_str); i++)
+        {
+            if (!isdigit(n_usp_str[i]))
+            {
+                is_valid = 0; // Se encontrar algo que não é número, invalida
+                break;
+            }
+        }
+
+        if (!is_valid || strlen(n_usp_str) == 0)
+        {
+            printf("Número USP inválido. Certifique-se de usar apenas números.\n");
+            printf("Pressione ENTER para tentar novamente.\n");
+            getchar(); // Aguarda o Enter do usuário
+        }
+        n_usp = atoi(n_usp_str); // Converte a string para número inteiro
+        no *aux = arvore_busca(arv_sist->raiz, &n_usp, erro);
+        if (aux != NULL)
+        {
+            printf("N-USP já cadastrado. Tente outro número ou cadastre os filmes.\n");
+            is_valid = 0;
+        }
+
+    } while (!is_valid);
+
+    printf("Número USP válido: %d\n", n_usp);
+
+    // Entrada e validação do nome
+    do
+    {
+        printf("\n--- INFORME O NOME DO USUÁRIO ---\n");
+        fgets(nome, TAM, stdin);
+        nome[strcspn(nome, "\n")] = '\0'; // Remove o '\n' do final
+
+        is_valid = 1; // Assume que é válido
+
+        // Verifica se o nome contém apenas letras e espaços
+        for (int i = 0; i < strlen(nome); i++)
+        {
+            if (!isalpha(nome[i]) && nome[i] != ' ')
+            {
+                is_valid = 0; // Invalida o nome se encontrar algo diferente
+                break;
+            }
+        }
+
+        if (!is_valid || strlen(nome) == 0)
+        {
+            printf("Nome inválido. Certifique-se de usar apenas letras e espaços.\n");
+            printf("Aperte uma tecla para continuar!");
+            getchar();
+        }
+    } while (!is_valid);
+
+    // Copia o nome validado
+    strcpy(nome_copia, nome);
+
+    // Entrada e validação de filmes favoritos
+    auxiliar_cadastro(arv_sist, l_ord, erro);
+
     arvore_inserir(arv_sist, &arv_sist->raiz, nome_copia, &n_usp, l_ord, erro);
 }
 
@@ -167,10 +238,8 @@ void listar_alunos(no *raiz, tipo_erro *erro)
 { // listagem de nomes de alunos e N-usp - percurso em ordem
     if (raiz == NULL)
     {
-        *erro = ERRO_NULL; // Se o nó atual for nulo, simplesmente retorna
         return;
     }
-
     // Percorre a subárvore esquerda
     listar_alunos(raiz->esq, erro);
 
@@ -181,13 +250,31 @@ void listar_alunos(no *raiz, tipo_erro *erro)
     listar_alunos(raiz->dir, erro);
 }
 
-// Busca usuário e informa se ele está cadastrado no sistema
+// void arquivo_listar_alunos(no *raiz, FILE *arquivo, tipo_erro *erro)
+// { // listagem de nomes de alunos e N-usp - percurso em ordem
+//     if (raiz == NULL)
+//     {
+//         return;
+//     }
+//     // Percorre a subárvore esquerda
+//     listar_alunos(raiz->esq, erro);
+
+//     // Imprime o valor do nó atual
+//     printf("Aluno(a): %s | N-USP: %d\n", raiz->dado, raiz->chave);
+
+//     // Percorre a subárvore direita
+//     listar_alunos(raiz->dir, erro);
+// }
+
+// Busca usuário e informa se ele está cadastrado no sistema, além de informar os filmes cadastrados por ele
 void buscar_usuario(Arvore *arv_sist, tipo_erro *erro)
 {
+    printf("\n---BUSCAR ALUNO---\n");
     // 1º, vamos checar se a árvore está vazia ou não
     if (arvore_vazia(arv_sist))
     {
         printf("Não há usuários cadastrados no sistema.\n");
+        limpar_tela();
     }
     else
     { // se não tiver vazia, deve-se checar se o usuário está no sistema
@@ -206,11 +293,38 @@ void buscar_usuario(Arvore *arv_sist, tipo_erro *erro)
         { // se o usuário foi encontrado
             printf("Usuário encontrado:\n");
             printf("Aluno(a): %s | N-USP: %d\n", aluno->dado, aluno->chave);
+            printf("Listagem de filmes cadastrados por %s:\n", aluno->dado);
+
+            // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
+            const char *generos[] = {
+                "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
+                "Ação",     // Índice 1
+                "Aventura", // Índice 2
+                "Comédia",  // Índice 3
+                "Drama",    // Índice 4
+                "Ficção",   // Índice 5
+                "Romance",  // Índice 6
+                "Suspense", // Índice 7
+                "Terror"    // Índice 8
+            };
+
+            ListaBloco *aux = aluno->lista_ord->inicio;
+
+            while (aux != NULL)
+            {
+                printf("%s | Gênero: %s\n\n", aux->dado, generos[aux->tipo]);
+                aux = aux->prox;
+            }
+
+            printf("Listagem completa!\n");
         }
     }
 }
+// Lista filmes da lista geral e sua contagem de referências
 void listar_filmes(Lista *lista_arv, tipo_erro *erro)
 {
+    printf("\n---LISTAGEM DE FILMES---\n");
+
     // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
     const char *generos[] = {
         "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
@@ -239,7 +353,7 @@ void listar_filmes(Lista *lista_arv, tipo_erro *erro)
 
         while (aux != NULL)
         {
-            printf("%s | Gênero: %s\n", aux->dado, generos[aux->tipo]);
+            printf("%s | Gênero: %s | Menções: %d\n\n", aux->dado, generos[aux->tipo], aux->cont_ref);
             aux = aux->prox;
         }
 
@@ -249,6 +363,8 @@ void listar_filmes(Lista *lista_arv, tipo_erro *erro)
 
 void buscar_filme(Arvore *arv_sist, tipo_erro *erro)
 {
+    printf("\n---BUSCAR FILME---\n");
+
     char filme[TAM];
     printf("Digite o nome do filme que deseja buscar: \n");
     fgets(filme, TAM, stdin);
@@ -266,7 +382,7 @@ void buscar_filme(Arvore *arv_sist, tipo_erro *erro)
     if (arvore_vazia(arv_sist))
     {
         *erro = ERRO_NULL; // árvore não inicializada ou vazia
-        printf("Não há usuários cadastrados no sistema.\n");
+        printf("Não há filmes cadastrados no sistema.\n");
         return;
     }
 
@@ -301,10 +417,17 @@ int calcular_distancia_euclidiana(int *vetor1, int *vetor2)
 }
 
 // Implementação da função percorrer_arvore
-void percorrer_arvore(no *raiz, int *vetor_ref, int *menor_distancia, no **mais_proximo)
+void percorrer_arvore(no *raiz, int *vetor_ref, int *menor_distancia, no **mais_proximo, no *usuario_atual)
 {
     if (raiz == NULL)
     {
+        return;
+    }
+
+    if (raiz == usuario_atual)
+    {
+        percorrer_arvore(raiz->esq, vetor_ref, menor_distancia, mais_proximo, usuario_atual);
+        percorrer_arvore(raiz->dir, vetor_ref, menor_distancia, mais_proximo, usuario_atual);
         return;
     }
 
@@ -319,13 +442,15 @@ void percorrer_arvore(no *raiz, int *vetor_ref, int *menor_distancia, no **mais_
     }
 
     // Percorre os filhos à esquerda e à direita
-    percorrer_arvore(raiz->esq, vetor_ref, menor_distancia, mais_proximo);
-    percorrer_arvore(raiz->dir, vetor_ref, menor_distancia, mais_proximo);
+    percorrer_arvore(raiz->esq, vetor_ref, menor_distancia, mais_proximo, usuario_atual);
+    percorrer_arvore(raiz->dir, vetor_ref, menor_distancia, mais_proximo, usuario_atual);
 }
 
 // Função principal para recomendar colega mais proximo
 void recomendar_colega(Arvore *arv_sist, tipo_erro *erro)
 {
+    printf("\n---RECOMENDAÇÃO DE COLEGA MAIS SIMILAR PARA IR AO CINEMA---\n");
+
     if (arvore_vazia(arv_sist))
     {
         printf("Não há usuários cadastrados no sistema.\n");
@@ -335,6 +460,7 @@ void recomendar_colega(Arvore *arv_sist, tipo_erro *erro)
     int n_usp;
     printf("Digite o seu número USP: ");
     scanf("%d", &n_usp);
+    getchar(); // Limpa o buffer do teclado
 
     no *aluno = arvore_busca(arv_sist->raiz, &n_usp, erro);
     if (aluno == NULL)
@@ -347,11 +473,11 @@ void recomendar_colega(Arvore *arv_sist, tipo_erro *erro)
     no *mais_proximo = NULL;
 
     // Percorre a árvore para encontrar o nó mais próximo
-    percorrer_arvore(arv_sist->raiz, aluno->lista_ord->vetor, &menor_distancia, &mais_proximo);
+    percorrer_arvore(arv_sist->raiz, aluno->lista_ord->vetor, &menor_distancia, &mais_proximo, aluno);
 
     if (mais_proximo != NULL)
     {
-        printf("O colega mais semelhante é o usuário com Nº USP %d, com uma distância de %d.\n", mais_proximo->chave, menor_distancia);
+        printf("O colega mais semelhante é o %s com Nº USP %d.\n", mais_proximo->dado, mais_proximo->chave);
     }
     else
     {
@@ -359,14 +485,176 @@ void recomendar_colega(Arvore *arv_sist, tipo_erro *erro)
     }
 }
 
-// void recomendar_oposto();
-// void exportar_dados();
-// void exibir_dados_arvore();
-// void remover_usuario();
+void percorrer_arvore_oposto(no *raiz, int *vetor_ref, int *maior_distancia, no **menos_proximo, no *usuario_atual)
+{
+    if (raiz == NULL)
+    {
+        return;
+    }
+
+    if (raiz == usuario_atual)
+    {
+        percorrer_arvore_oposto(raiz->esq, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
+        percorrer_arvore_oposto(raiz->dir, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
+        return;
+    }
+
+    // Calcula a distância para o nó atual
+    int distancia = calcular_distancia_euclidiana(raiz->lista_ord->vetor, vetor_ref);
+
+    // Atualiza a menor distância e o nó mais próximo, se necessário
+    if (distancia > *maior_distancia)
+    {
+        *maior_distancia = distancia;
+        *menos_proximo = raiz;
+    }
+
+    // Percorre os filhos à esquerda e à direita
+    percorrer_arvore_oposto(raiz->esq, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
+    percorrer_arvore_oposto(raiz->dir, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
+}
+
+void recomendar_colega_oposto(Arvore *arv_sist, tipo_erro *erro)
+{
+    printf("\n---RECOMENDAÇÃO DE COLEGA MENOS SIMILAR PARA IR AO CINEMA---\n");
+
+    if (arvore_vazia(arv_sist))
+    {
+        printf("Não há usuários cadastrados no sistema.\n");
+        return;
+    }
+
+    int n_usp;
+    printf("Digite o seu número USP: ");
+    scanf("%d", &n_usp);
+    getchar(); // Limpa o buffer do teclado
+
+    no *aluno = arvore_busca(arv_sist->raiz, &n_usp, erro);
+    if (aluno == NULL)
+    {
+        printf("Usuário com Nº USP %d não está cadastrado no sistema.\n", n_usp);
+        return;
+    }
+
+    int maior_distancia = INT_MIN;
+    no *menos_proximo = NULL;
+
+    // Percorre a árvore para encontrar o nó mais próximo
+    percorrer_arvore_oposto(arv_sist->raiz, aluno->lista_ord->vetor, &maior_distancia, &menos_proximo, aluno);
+
+    if (menos_proximo != NULL)
+    {
+        printf("O colega menos semelhante é o %s com Nº USP %d\n", menos_proximo->dado, menos_proximo->chave);
+    }
+    else
+    {
+        printf("Nenhum colega encontrado.\n");
+    }
+}
+
+void exportar_dados(Arvore *arv_sist, tipo_erro *erro)
+{
+    FILE *arquivo;
+    arquivo = fopen("dados_cine_usp.txt", "w");
+    if (arquivo == NULL)
+    {
+        printf("Erro ao abrir o arquivo.\n");
+        return;
+    }
+
+    // printar todos os dados dos nos da arvore
+    fprintf(arquivo, "Dados dos usuários:\n");
+    fprintf(arquivo, "N-USP | Nome | Filmes\n");
+
+    fprintf(arquivo, "Dados da árvore:\n");
+    fprintf(arquivo, "Total de nós: %d\n", arv_sist->totalNos);
+    fprintf(arquivo, "Altura da árvore: %d\n", alturaArvore(arv_sist->raiz));
+
+    fclose(arquivo);
+    printf("Dados exportados com sucesso!\n");
+}
+
+void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
+{
+    printf("\n--- DADOS DA ÁRVORE ---\n");
+    printf("\n");
+    printf("Total de Nós: %d\n", arv_sist->totalNos);
+    printf("Altura da Árvore: %d\n", alturaArvore(arv_sist->raiz));
+
+    int n_usp = 0;
+    printf("Digite o N-USP do nó que deseja verificar: ");
+    scanf("%d", &n_usp);
+    getchar(); // Limpa o buffer do teclado
+
+    no *aux = arvore_busca(arv_sist->raiz, &n_usp, erro);
+
+    printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux));
+
+    printf("\n---FIM EXIBIÇÃO DOS DADOS---\n");
+}
+
+void remover_usuario(Arvore *arv_sist, tipo_erro *erro)
+{
+    printf("\n---REMOÇÃO DE USUÁRIO---\n");
+
+    // primeiro, vemos se a árvore do sistema está vazia
+    if (arvore_vazia(arv_sist))
+    {
+        printf("Não foi possível remover um usuário. Não há usuários cadastrados no sistema!\n");
+        return;
+    }
+    else
+    { // caso em que a árvore não está vazia e é necessário remover o usuário
+        // Vamos obter a chave (Nº USP) do usuário
+        elem_chave n_usp;
+        printf("Digite o número USP do usuário a ser removido: ");
+        scanf("%d", &n_usp);
+        getchar(); // Limpa o buffer do teclado
+        // Chama a função de buscar nó na árvore
+        no *aluno = arvore_busca(arv_sist->raiz, &n_usp, erro);
+        if (aluno == NULL)
+        { // se o usuário não foi encontrado
+            printf("Usuário não encontrado.\n");
+            return;
+        }
+        else
+        { // se o usuário foi encontrado, chamamos a função para remover o nó
+            // antes de remover o usuário da árvore do sistema, é preciso ver como isso afeta a lista geral
+            // lógica de tratamento da lista geral:
+            // primeiro, vamos obter um ponteiro o primeiro filme que tá na lista de filmes do usuário
+
+            ListaBloco *aux_usu = lista_verifica_elem(aluno->lista_ord, aluno->lista_ord->inicio->dado, erro);
+            while (aux_usu != NULL)
+            {
+                // agora temos um ponteiro para o ListaBloco
+                // agora vamos procurar ele na lista_geral com lista_Verifica_elem
+                ListaBloco *aux_geral = lista_verifica_elem(arv_sist->Lista_Arv, aux_usu->dado, erro);
+                aux_geral->cont_ref -= 1;
+                if (aux_geral->cont_ref == 0) // caso em que o filme não tem mais referências
+                {
+                    lista_pop(arv_sist->Lista_Arv, aux_geral->dado, erro); // remove o filme sem referências da liista geral
+                }
+                lista_pop(aluno->lista_ord, aux_usu->dado, erro);
+                aux_usu = aux_usu->prox;
+            }
+
+            arvore_remover(arv_sist, &arv_sist->raiz, &aluno->chave, erro);
+            if (*erro != SUCESSO)
+            {
+                printf("Erro ao tentar remover usuário.\n");
+            }
+            else
+            {
+                printf("Usuário removido com sucesso!\n");
+            }
+        }
+    }
+}
 
 // Função que diz qual é o filme mais mencionado
 void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
 {
+    printf("\n---LISTAGEM DO FILMES MAIS MENCIONADO---\n");
     // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
     const char *generos[] = {
         "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
@@ -406,6 +694,58 @@ void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
     printf("%s | Gênero: %s\n", melhor_filme->dado, generos[melhor_filme->tipo]);
 }
 
+void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
+{
+    printf("\n---CADASTRO DE FILMES---\n");
+    int n_usp;
+    char n_usp_str[TAM];
+    int is_valid = 0;
+
+    do
+    {
+        printf("\n--- INFORME O NÚMERO USP DO USUÁRIO ---\n");
+        fgets(n_usp_str, sizeof(n_usp_str), stdin);
+        n_usp_str[strcspn(n_usp_str, "\n")] = '\0'; // Remove o '\n', se presente
+
+        is_valid = 1; // Assume que é válido
+
+        // Verifica se todos os caracteres são dígitos
+        for (int i = 0; i < strlen(n_usp_str); i++)
+        {
+            if (!isdigit(n_usp_str[i]))
+            {
+                is_valid = 0; // Se encontrar algo que não é número, invalida
+                break;
+            }
+        }
+
+        if (!is_valid || strlen(n_usp_str) == 0)
+        {
+            printf("Número USP inválido. Certifique-se de usar apenas números.\n");
+            printf("Pressione ENTER para tentar novamente.\n");
+            getchar(); // Aguarda o Enter do usuário
+        }
+
+    } while (!is_valid);
+
+    // Converte a string para número inteiro
+    n_usp = atoi(n_usp_str);
+    printf("Número USP válido: %d\n", n_usp);
+
+    no *aux = arvore_busca(arv_sistema->raiz, &n_usp, erro);
+    if (aux == NULL)
+    {
+        *erro = ERRO_NULL;
+        printf(" N-USP não cadastrado. Realize seu primeiro cadastro.\n");
+        return;
+    }
+    else
+    {
+        auxiliar_cadastro(arv_sistema, aux->lista_ord, erro);
+        printf("Cadastro feito com sucesso.\n");
+    }
+}
+
 void exibir_menu()
 {
     printf("\n\n");
@@ -423,6 +763,7 @@ void exibir_menu()
     printf("9) Exibir dados técnicos da árvore\n");
     printf("10) Remover usuário do cadastro\n");
     printf("11) Filme mais mencionado\n");
+    printf("12) Cadastrar filmes\n");
     printf("0) Sair\n");
     printf("==============================\n");
     printf("Escolha uma opção: ");

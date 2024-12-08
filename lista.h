@@ -23,7 +23,7 @@ typedef struct listabloco
 typedef struct lista
 {
     ListaBloco *inicio;
-    ListaBloco *fim;
+    //ListaBloco *fim;
     int vetor[QUANT]; // vetor que armazena as quantidades de filmes cadastrados por genero
 } Lista;
 

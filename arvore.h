@@ -11,7 +11,7 @@ typedef struct no {
     elem_chave chave; // chave de busca
     Lista *lista_ord; // Lista ordenada
     struct no *esq, *dir; // Sub-árvores esquerda e direita
-    int maiorDiferencaAltura;
+    //int maiorDiferencaAltura;
 } no;
 
 // Estrutura para armazenar dados da árvore

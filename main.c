@@ -35,71 +35,102 @@ int main()
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
-
       break;
+      
     case 2:
+      if(arvore_vazia(arv_sistema)){
+        printf("Não há usuários cadastrados no sistema");
+        break;
+      }
       printf("\n---LISTAGEM DE ALUNOS---\n");
       listar_alunos(arv_sistema->raiz, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
-
       break;
+
     case 3: // busca um usuário específico no sistema e fala se ele está ou não cadastrado
       buscar_usuario(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar(); 
       limpar_tela();
       break;
+
     case 4: // lista todos os filmes cadastrados no sistema
       listar_filmes(arv_sistema->Lista_Arv, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
+
     case 5: //busca um filme e verifica quantas vezes foi mencionado
       buscar_filme(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
+
     case 6:
       recomendar_colega(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
+
     case 7:
-      // recomendar_oposto();
+      recomendar_colega_oposto(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
+
     case 8:
       // exportar_dados();
       break;
+
     case 9:
-      // exibir_dados_arvore();
+      exibir_dados_arvore(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
+
     case 10:
-      ////remover_usuario();
-
-      // antes de remover, precisa verificar lista geral de filmes
-      // liberar lista do usuario
-
-      // void arvore_remover
+      remover_usuario(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
     case 11: // Informa qual é o filme mais mencionado pelos alunos
       mais_mencionado(arv_sistema->Lista_Arv, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
+    case 12: //cadastrar filmes
+    cadastrar_filmes(arv_sistema,&erro);
+    printf("Aperte uma tecla para continuar!");
+    getchar();
+    limpar_tela();
+
     case 0:
       printf("\nSaindo do sistema. Até mais!\n");
       break;
+
     default:
       printf("\nOpção inválida! Tente novamente.\n");
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
     }
   } while (opcao != 0);
 
 
-  arvore_libera(arv_sistema->raiz,erro);
-  if (erro!=SUCESSO){
+  arvore_libera(arv_sistema->raiz, &erro);
+  if ( erro != SUCESSO ){
     printf("Erro ao liberar memória do sistema!\n");
   }else{
-    printf("Sistema liberado com sucesso! Encerrando..\n")
+    printf("Sistema liberado com sucesso! Encerrando..\n");
   }
 
   return 0;

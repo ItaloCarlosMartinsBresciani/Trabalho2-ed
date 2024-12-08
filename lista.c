@@ -13,7 +13,7 @@ Lista *lista_init(tipo_erro *erro) // ok
         *erro = ERRO_ALLOC; // erro de alocação de memória
         return NULL;
     }
-    lista->fim = NULL;
+    //lista->fim = NULL;
     lista->inicio = NULL;
     memset(lista->vetor, 0, sizeof(lista->vetor)); // Inicializa todos os elementos com 0
     *erro = SUCESSO;                               // lista inicializada com sucesso
@@ -65,7 +65,7 @@ ListaBloco *lista_verifica_elem(Lista *lista, elem_lista *dado, tipo_erro *erro)
     }
     if (lista_vazia(lista, erro) == true)
     {
-        if (erro != SUCESSO) // significa que a verificação se a lista está vazia não deu certo
+        if (*erro != SUCESSO) // significa que a verificação se a lista está vazia não deu certo
         {
             return NULL;
         }

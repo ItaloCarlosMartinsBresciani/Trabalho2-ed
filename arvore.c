@@ -158,7 +158,7 @@ void arvore_remover(Arvore *a, no **p, elem_chave *x, tipo_erro *erro)
             no *aux2 = arvore_busca_maior(&(*p)->esq, erro);
             (*p)->chave = aux2->chave; // só o numero usp, precisa trocar outras inform
             (*p)->dado = aux2->dado;
-            (*p)->maiorDiferencaAltura = aux2->maiorDiferencaAltura;
+            //(*p)->maiorDiferencaAltura = aux2->maiorDiferencaAltura;
             (*p)->lista_ord = aux2->lista_ord;
 
             return (arvore_remover(a, &(*p)->esq, &(*p)->chave, erro));
@@ -169,7 +169,6 @@ void arvore_remover(Arvore *a, no **p, elem_chave *x, tipo_erro *erro)
 
 void arvore_libera(no *raiz, tipo_erro *erro) {
     if (raiz == NULL) {
-        *erro = ERRO_NULL; // Indica que a raiz é nula
         return;
     }
 
