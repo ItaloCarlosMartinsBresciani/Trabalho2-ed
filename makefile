@@ -1,31 +1,29 @@
-# Nome do compilador
+# Variáveis para compilador e flags
 CC = gcc
-
-# Flags de compilação
 CFLAGS = -Wall -Wextra -g
-
-# Arquivos do projeto
-SRC = arvore.c lista.c main_funcoes.c main.c
-HEADERS = arvore.h erro.h lista.h main_funcoes.h
-OBJ = $(SRC:.c=.o)
-
-# Nome do executável
+OBJ = arvore.o lista.o main_funcoes.o main.o
 TARGET = programa
 
-# Regra padrão: compila tudo
+# Detecta o sistema operacional
+ifeq ($(OS),Windows_NT)
+    RM = del /Q /F
+    EXE_EXT = .exe
+else
+    RM = rm -f
+    EXE_EXT =
+endif
+
+# Regra principal (compilar tudo)
 all: $(TARGET)
 
-# Regra para compilar o programa principal
+# Regra para gerar o executável
 $(TARGET): $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^
+	$(CC) $(CFLAGS) -o $@$(EXE_EXT) $^
 
-# Regra para compilar os arquivos objeto
-%.o: %.c $(HEADERS)
+# Regra para compilar os arquivos .c em .o
+%.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Limpa os arquivos temporários
+# Limpeza dos arquivos gerados
 clean:
-	rm -f $(OBJ) $(TARGET)
-
-# Regra para recompilar do zero
-rebuild: clean all
+	$(RM) $(OBJ) $(TARGET)$(EXE_EXT)
