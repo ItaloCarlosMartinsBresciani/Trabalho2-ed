@@ -54,7 +54,7 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
     int total_filmes = 0;
     char filmes_str[TAM];
     int is_valid = 0;
-
+    // Laço do-while para informar quantos filmes devem ser cadastrados
     do
     {
         printf("Quantos filmes favoritos deseja cadastrar? ");
@@ -89,16 +89,17 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
         }
     } while (!is_valid);
 
-    // Entrada dos filmes
-    for (int i = 0; i < total_filmes; i++)
+
+    int i = 0;
+    do
     {
         ListaBloco *p = (ListaBloco *)malloc(sizeof(ListaBloco));
         if (p == NULL)
-        {
+        { // verifica se a alocação de memória foi realizada com sucesso
             *erro = ERRO_ALLOC;
             return;
         }
-        else
+        else // se a alocação foi bem sucedida
         {
             printf("\n--- INFORME O NOME DO FILME %d ---\n", i + 1);
 
@@ -115,29 +116,67 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
             }
             strcpy(p->dado, filme);
 
-            do
-            {
-                printf("\n--- SELECIONE O GÊNERO DO FILME %d ---\n", i + 1);
-                printf("[1] - Ação\n");
-                printf("[2] - Aventura\n");
-                printf("[3] - Comédia\n");
-                printf("[4] - Drama\n");
-                printf("[5] - Ficção\n");
-                printf("[6] - Romance\n");
-                printf("[7] - Suspense\n");
-                printf("[8] - Terror\n");
-                printf("Escolha uma opção (1 a 8): ");
-                scanf("%d", &genero);
-                l_ord->vetor[genero - 1]++;
-                getchar(); // limpa o buffer
-            } while (genero < 1 || genero > 8);
+            int mesmo_user = 0;
 
-            printf("\n");
-            p->tipo = genero;
-            lista_push(l_ord, p->dado, &p->tipo, erro);
-            add_lista_geral(arv_sist, p->dado, &p->tipo, erro);
+            // Ver se o filme informado está na lista geral
+            ListaBloco *l = lista_verifica_elem(arv_sist->Lista_Arv, p->dado, erro);
+            if (l != NULL)
+            { // FILME JÁ CADASTRADO NA LISTA GERAL
+                const char *generos[] = {
+                    "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
+                    "Ação",     // Índice 1
+                    "Aventura", // Índice 2
+                    "Comédia",  // Índice 3
+                    "Drama",    // Índice 4
+                    "Ficção",   // Índice 5
+                    "Romance",  // Índice 6
+                    "Suspense", // Índice 7
+                    "Terror"    // Índice 8
+                };
+                ListaBloco *m = lista_verifica_elem(l_ord, l->dado, erro); // Verifica se o filme está na lista do user
+                if (m == NULL)
+                { // Se o filme não está na lista de usuários
+                    lista_push(l_ord, l->dado, &l->tipo, erro); // insere o filme na lista do usuários
+                    i++; // incrementa o i pois o filme foi inserido na lista de usuários
+                    printf("Filme cadastrado com sucesso na lista de favoritos! O genêro é %s\n", generos[l->tipo]);
+                    l->cont_ref++;
+
+                }else
+                { // Se o filme está na lista de usuários
+                    printf("Esse filme já foi cadastrado na sua lista de favoritos. Tente outro!\n");
+                    continue; // volta ao início do laço
+
+                }
+            }
+            else
+            { // FILME NÃO CADASTRADO NA LISTA GERAL
+                do
+                {
+                    printf("\n--- SELECIONE O GÊNERO DO FILME %d ---\n", i + 1);
+                    printf("[1] - Ação\n");
+                    printf("[2] - Aventura\n");
+                    printf("[3] - Comédia\n");
+                    printf("[4] - Drama\n");
+                    printf("[5] - Ficção\n");
+                    printf("[6] - Romance\n");
+                    printf("[7] - Suspense\n");
+                    printf("[8] - Terror\n");
+                    printf("Escolha uma opção (1 a 8): ");
+                    scanf("%d", &genero);
+                    l_ord->vetor[genero - 1]++;
+                    getchar(); // limpa o buffer
+                } while (genero < 1 || genero > 8);
+
+                printf("\n");
+                p->tipo = genero;
+                lista_push(l_ord, p->dado, &p->tipo, erro);
+                i++; // incrementa o i pois o filme foi inserido na lista de usuários
+                printf("Filme cadastrado com sucesso!\n");
+                add_lista_geral(arv_sist, p->dado, &p->tipo, erro);
+            }
         }
-    }
+        
+    }while(i < total_filmes);
 }
 
 void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o n_usp já existe
@@ -250,21 +289,44 @@ void listar_alunos(no *raiz, tipo_erro *erro)
     listar_alunos(raiz->dir, erro);
 }
 
-// void arquivo_listar_alunos(no *raiz, FILE *arquivo, tipo_erro *erro)
-// { // listagem de nomes de alunos e N-usp - percurso em ordem
-//     if (raiz == NULL)
-//     {
-//         return;
-//     }
-//     // Percorre a subárvore esquerda
-//     listar_alunos(raiz->esq, erro);
+void arquivo_listar_alunos(no *raiz, FILE *arquivo, tipo_erro *erro)
+{ // listagem de nomes de alunos e N-usp - percurso em ordem
+    if (raiz == NULL)
+    {
+        return;
+    }
+    // Percorre a subárvore esquerda
+    arquivo_listar_alunos(raiz->esq, arquivo, erro);
 
-//     // Imprime o valor do nó atual
-//     printf("Aluno(a): %s | N-USP: %d\n", raiz->dado, raiz->chave);
+    // Imprime no arquivo o valor do nó atual
+    fprintf(arquivo, "N-USP: %d | Nome: %s\n", raiz->chave, raiz->dado);
+    fprintf(arquivo, "Listagem de filmes cadastrados por %s:\n", raiz->dado);
+    // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
+    const char *generos[] = {
+        "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
+        "Ação",     // Índice 1
+        "Aventura", // Índice 2
+        "Comédia",  // Índice 3
+        "Drama",    // Índice 4
+        "Ficção",   // Índice 5
+        "Romance",  // Índice 6
+        "Suspense", // Índice 7
+        "Terror"    // Índice 8
+    };
 
-//     // Percorre a subárvore direita
-//     listar_alunos(raiz->dir, erro);
-// }
+    if (raiz->lista_ord != NULL && raiz->lista_ord->inicio != NULL)
+    {
+        ListaBloco *aux = raiz->lista_ord->inicio;
+        while (aux != NULL)
+        {
+            fprintf(arquivo, "%s | Gênero: %s\n\n", aux->dado, generos[aux->tipo]);
+            aux = aux->prox;
+        }
+    }
+
+    // Percorre a subárvore direita
+    arquivo_listar_alunos(raiz->dir, arquivo, erro);
+}
 
 // Busca usuário e informa se ele está cadastrado no sistema, além de informar os filmes cadastrados por ele
 void buscar_usuario(Arvore *arv_sist, tipo_erro *erro)
@@ -563,12 +625,49 @@ void exportar_dados(Arvore *arv_sist, tipo_erro *erro)
     }
 
     // printar todos os dados dos nos da arvore
-    fprintf(arquivo, "Dados dos usuários:\n");
-    fprintf(arquivo, "N-USP | Nome | Filmes\n");
+    fprintf(arquivo, "\n---DADOS DOS USUARIOS---\n");
+    arquivo_listar_alunos(arv_sist->raiz, arquivo, erro);
+    // imprimir no arquivo texto todos os filmes cadastrados
 
-    fprintf(arquivo, "Dados da árvore:\n");
+    // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
+    const char *generos[] = {
+        "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
+        "Ação",     // Índice 1
+        "Aventura", // Índice 2
+        "Comédia",  // Índice 3
+        "Drama",    // Índice 4
+        "Ficção",   // Índice 5
+        "Romance",  // Índice 6
+        "Suspense", // Índice 7
+        "Terror"    // Índice 8
+    };
+
+    if (lista_vazia(arv_sist->Lista_Arv, erro))
+    {
+        fprintf(arquivo, "Não há filmes cadastrados no sistema.\n");
+    }
+    else if (*erro != SUCESSO)
+    {
+        fprintf(arquivo, "Erro ao verificar se a lista está vazia.\n");
+    }
+    else
+    {
+        fprintf(arquivo, "==========================================\n");
+        fprintf(arquivo, "Listagem de filmes cadastrados no sistema:\n");
+        ListaBloco *aux = arv_sist->Lista_Arv->inicio;
+
+        while (aux != NULL)
+        {
+            fprintf(arquivo, "%s | Gênero: %s | Menções: %d\n\n", aux->dado, generos[aux->tipo], aux->cont_ref);
+            aux = aux->prox;
+        }
+    }
+    fprintf(arquivo, "===============================\n");
+    fprintf(arquivo, "\n---DADOS TÉCNICOS DA ARVORE---\n");
+    fprintf(arquivo, "Dados da árvore do sistema:\n");
     fprintf(arquivo, "Total de nós: %d\n", arv_sist->totalNos);
     fprintf(arquivo, "Altura da árvore: %d\n", alturaArvore(arv_sist->raiz));
+    // listar todos os filmes cadastrados
 
     fclose(arquivo);
     printf("Dados exportados com sucesso!\n");
@@ -587,8 +686,14 @@ void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
     getchar(); // Limpa o buffer do teclado
 
     no *aux = arvore_busca(arv_sist->raiz, &n_usp, erro);
-
-    printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux));
+    if (alturaArvore(aux) == 0)
+    {
+        printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux));
+    }
+    else
+    {
+        printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux) - 1);
+    }
 
     printf("\n---FIM EXIBIÇÃO DOS DADOS---\n");
 }
@@ -654,7 +759,7 @@ void remover_usuario(Arvore *arv_sist, tipo_erro *erro)
 // Função que diz qual é o filme mais mencionado
 void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
 {
-    printf("\n---LISTAGEM DO FILMES MAIS MENCIONADO---\n");
+    printf("\n---FILME MAIS MENCIONADO---\n");
     // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
     const char *generos[] = {
         "N/A",      // Índice 0 (não usado, apenas para facilitar o mapeamento)
@@ -690,8 +795,7 @@ void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
             aux = aux->prox;
         }
     }
-    printf("Filme mais mencionado:\n");
-    printf("%s | Gênero: %s\n", melhor_filme->dado, generos[melhor_filme->tipo]);
+    printf("%s | Gênero: %s | Menções:%d\n", melhor_filme->dado, generos[melhor_filme->tipo], melhor_filme->cont_ref);
 }
 
 void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)

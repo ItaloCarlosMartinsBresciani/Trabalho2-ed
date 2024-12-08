@@ -26,7 +26,7 @@ int main()
       criar_cadastro(arv_sistema, &erro);
       if (erro == SUCESSO)
       {
-        printf("Cadastro realizado com sucesso!\n");
+        printf("Cadastro do usuário realizado com sucesso!\n");
       }
       else
       {
@@ -36,9 +36,10 @@ int main()
       getchar();
       limpar_tela();
       break;
-      
+
     case 2:
-      if(arvore_vazia(arv_sistema)){
+      if (arvore_vazia(arv_sistema))
+      {
         printf("Não há usuários cadastrados no sistema");
         break;
       }
@@ -52,7 +53,7 @@ int main()
     case 3: // busca um usuário específico no sistema e fala se ele está ou não cadastrado
       buscar_usuario(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
-      getchar(); 
+      getchar();
       limpar_tela();
       break;
 
@@ -63,7 +64,7 @@ int main()
       limpar_tela();
       break;
 
-    case 5: //busca um filme e verifica quantas vezes foi mencionado
+    case 5: // busca um filme e verifica quantas vezes foi mencionado
       buscar_filme(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
@@ -85,7 +86,10 @@ int main()
       break;
 
     case 8:
-      // exportar_dados();
+      exportar_dados(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
       break;
 
     case 9:
@@ -107,11 +111,11 @@ int main()
       getchar();
       limpar_tela();
       break;
-    case 12: //cadastrar filmes
-    cadastrar_filmes(arv_sistema,&erro);
-    printf("Aperte uma tecla para continuar!");
-    getchar();
-    limpar_tela();
+    case 12: // cadastrar filmes
+      cadastrar_filmes(arv_sistema, &erro);
+      printf("Aperte uma tecla para continuar!");
+      getchar();
+      limpar_tela();
 
     case 0:
       printf("\nSaindo do sistema. Até mais!\n");
@@ -125,11 +129,13 @@ int main()
     }
   } while (opcao != 0);
 
-
   arvore_libera(arv_sistema->raiz, &erro);
-  if ( erro != SUCESSO ){
+  if (erro != SUCESSO)
+  {
     printf("Erro ao liberar memória do sistema!\n");
-  }else{
+  }
+  else
+  {
     printf("Sistema liberado com sucesso! Encerrando..\n");
   }
 
