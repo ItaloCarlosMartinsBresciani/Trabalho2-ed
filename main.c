@@ -5,9 +5,11 @@
 #include "arvore.h"
 #include "erro.h"
 #include "main_funcoes.h"
+#include <locale.h>
 
 int main()
 {
+  setlocale(LC_ALL, "Portuguese");
   // Inicilizando as estruturas que serão usadas no sistema
   tipo_erro erro = SUCESSO;
   Arvore *arv_sistema = arvore_init(&erro);

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "arvore.h"
 #include "lista.h"
+#include <locale.h>
 
 Arvore *arvore_init(tipo_erro *erro)
 {

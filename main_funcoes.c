@@ -7,6 +7,7 @@
 #include "erro.h"
 #include <math.h>
 #include "main_funcoes.h"
+#include <locale.h>
 #include <limits.h>
 
 #define TAM 100
@@ -48,7 +49,7 @@ void add_lista_geral(Arvore *arv_sist, elem_arv *filme, tipo_do_bloco *genero, t
 
 void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
 {
-
+    setlocale(LC_ALL, "Portuguese");
     char filme[TAM];
     int genero;
     int total_filmes = 0;
@@ -182,7 +183,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
 {
     *erro = SUCESSO;
     int is_valid = 0;
-
+    setlocale(LC_ALL, "Portuguese");
     printf("\n--- CADASTRO DE USUÁRIO ---\n");
     char nome[TAM];
 
@@ -274,6 +275,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
 
 void listar_alunos(no *raiz, tipo_erro *erro)
 { // listagem de nomes de alunos e N-usp - percurso em ordem
+    setlocale(LC_ALL, "Portuguese");
     if (raiz == NULL)
     {
         return;
@@ -290,6 +292,7 @@ void listar_alunos(no *raiz, tipo_erro *erro)
 
 void arquivo_listar_alunos(no *raiz, FILE *arquivo, tipo_erro *erro)
 { // listagem de nomes de alunos e N-usp - percurso em ordem
+    setlocale(LC_ALL, "Portuguese");
     if (raiz == NULL)
     {
         return;
@@ -330,6 +333,7 @@ void arquivo_listar_alunos(no *raiz, FILE *arquivo, tipo_erro *erro)
 // Busca usuário e informa se ele está cadastrado no sistema, além de informar os filmes cadastrados por ele
 void buscar_usuario(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---BUSCAR ALUNO---\n");
     // 1º, vamos checar se a árvore está vazia ou não
     if (arvore_vazia(arv_sist))
@@ -384,6 +388,7 @@ void buscar_usuario(Arvore *arv_sist, tipo_erro *erro)
 // Lista filmes da lista geral e sua contagem de referências
 void listar_filmes(Lista *lista_arv, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---LISTAGEM DE FILMES---\n");
 
     // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
@@ -424,6 +429,7 @@ void listar_filmes(Lista *lista_arv, tipo_erro *erro)
 
 void buscar_filme(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---BUSCAR FILME---\n");
 
     char filme[TAM];
@@ -510,6 +516,7 @@ void percorrer_arvore(no *raiz, int *vetor_ref, int *menor_distancia, no **mais_
 // Função principal para recomendar colega mais proximo
 void recomendar_colega(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---RECOMENDAÇÃO DE COLEGA MAIS SIMILAR PARA IR AO CINEMA---\n");
 
     if (arvore_vazia(arv_sist))
@@ -577,6 +584,7 @@ void percorrer_arvore_oposto(no *raiz, int *vetor_ref, int *maior_distancia, no 
 
 void recomendar_colega_oposto(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---RECOMENDAÇÃO DE COLEGA MENOS SIMILAR PARA IR AO CINEMA---\n");
 
     if (arvore_vazia(arv_sist))
@@ -674,6 +682,7 @@ void exportar_dados(Arvore *arv_sist, tipo_erro *erro)
 
 void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n--- DADOS DA ÁRVORE ---\n");
     printf("\n");
     printf("Total de Nós: %d\n", arv_sist->totalNos);
@@ -699,6 +708,7 @@ void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
 
 void remover_usuario(Arvore *arv_sist, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---REMOÇÃO DE USUÁRIO---\n");
 
     // primeiro, vemos se a árvore do sistema está vazia
@@ -758,6 +768,7 @@ void remover_usuario(Arvore *arv_sist, tipo_erro *erro)
 // Função que diz qual é o filme mais mencionado
 void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---FILME MAIS MENCIONADO---\n");
     // Array com os nomes dos gêneros. O índice corresponde ao número do gênero.
     const char *generos[] = {
@@ -799,6 +810,7 @@ void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
 
 void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n---CADASTRO DE FILMES---\n");
     int n_usp;
     char n_usp_str[TAM];
@@ -851,6 +863,7 @@ void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
 
 void exibir_menu()
 {
+    setlocale(LC_ALL, "Portuguese");
     printf("\n\n");
     printf("\n==============================\n");
     printf("    SISTEMA DO CINE USP     \n");
