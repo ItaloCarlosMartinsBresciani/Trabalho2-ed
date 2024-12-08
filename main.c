@@ -116,6 +116,7 @@ int main()
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
+      break;
 
     case 0:
       printf("\nSaindo do sistema. Até mais!\n");

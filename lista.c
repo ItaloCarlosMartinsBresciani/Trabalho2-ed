@@ -121,6 +121,7 @@ ListaBloco *lista_pop(Lista *lista, elem_lista *dado, tipo_erro *erro) /*, int *
             *erro = ERRO_POP_VAZIO;
         }
     }
+    return NULL;
 }
 
 bool lista_vazia(Lista *lista, tipo_erro *erro)

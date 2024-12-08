@@ -64,7 +64,7 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
         is_valid = 1; // Assume que é válido
 
         // Verifica se a entrada contém apenas dígitos
-        for (int i = 0; i < strlen(filmes_str); i++)
+        for (size_t i = 0; i < strlen(filmes_str); i++)
         {
             if (!isdigit(filmes_str[i]))
             {
@@ -116,7 +116,6 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
             }
             strcpy(p->dado, filme);
 
-            int mesmo_user = 0;
 
             // Ver se o filme informado está na lista geral
             ListaBloco *l = lista_verifica_elem(arv_sist->Lista_Arv, p->dado, erro);
@@ -210,7 +209,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
         is_valid = 1; // Assume que é válido
 
         // Verifica se todos os caracteres são dígitos
-        for (int i = 0; i < strlen(n_usp_str); i++)
+        for (size_t i = 0; i < strlen(n_usp_str); i++)
         {
             if (!isdigit(n_usp_str[i]))
             {
@@ -247,7 +246,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
         is_valid = 1; // Assume que é válido
 
         // Verifica se o nome contém apenas letras e espaços
-        for (int i = 0; i < strlen(nome); i++)
+        for (size_t i = 0; i < strlen(nome); i++)
         {
             if (!isalpha(nome[i]) && nome[i] != ' ')
             {
@@ -814,7 +813,7 @@ void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
         is_valid = 1; // Assume que é válido
 
         // Verifica se todos os caracteres são dígitos
-        for (int i = 0; i < strlen(n_usp_str); i++)
+        for (size_t i = 0; i < strlen(n_usp_str); i++)
         {
             if (!isdigit(n_usp_str[i]))
             {

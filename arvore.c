@@ -49,6 +49,8 @@ no *arvore_busca(no *p, elem_chave *chave, tipo_erro *erro)
     }
     else if (*chave > p->chave)
         return (arvore_busca(p->dir, chave, erro));
+
+    return NULL;
 }
 
 int alturaArvore(no *raiz)
