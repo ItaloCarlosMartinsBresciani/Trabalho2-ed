@@ -36,7 +36,6 @@ no *arvore_busca(no *p, elem_chave *chave, tipo_erro *erro)
 {
     if (p == NULL)
     {
-        *erro = ERRO_NULL;
         return NULL;
     }
     else if (p->chave == *chave)
@@ -57,7 +56,7 @@ int alturaArvore(no *raiz)
     if (raiz == NULL)
     {
         return 0;
-    }
+    } 
     int alturaEsquerda = alturaArvore(raiz->esq);
     int alturaDireita = alturaArvore(raiz->dir);
     return 1 + (alturaEsquerda > alturaDireita ? alturaEsquerda : alturaDireita);

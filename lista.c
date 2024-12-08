@@ -35,7 +35,7 @@ void lista_push(Lista *lista, elem_lista *dado, tipo_do_bloco *tipo, tipo_erro *
         *erro = SUCESSO; // alocação de memória bem sucedida
         bloco->dado = dado;
         bloco->tipo = *tipo; // tipo passado por referência é atribuído ao campo bloco->tipo
-
+        
         if ((lista->inicio == NULL) || (strcmp(dado, lista->inicio->dado) < 0))
         { // caso em que o bloco < 1º da lista
             bloco->prox = lista->inicio;
@@ -69,7 +69,6 @@ ListaBloco *lista_verifica_elem(Lista *lista, elem_lista *dado, tipo_erro *erro)
         {
             return NULL;
         }
-        *erro = ERRO_NULL; // tentou verificar um elemento em uma lista vazia
         return NULL;
     }
 

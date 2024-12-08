@@ -9,14 +9,14 @@
 typedef char elem_lista;
 typedef int tipo_do_bloco;
 
-#define QUANT 9 // definida a quantidade de tipos que cada bloco pode assumir
+#define QUANT 8 // definida a quantidade de tipos que cada bloco pode assumir
 // No caso dos filmes: {1- Ação, 2- Aventura, 3- Comedia, 4 - Drama, 5- Ficcao, 6- Romance, 7- Suspense, 8 - Terror}
 
 typedef struct listabloco
 {
-    elem_lista *dado;   // nome do filme
-    tipo_do_bloco tipo; // genero
-    int cont_ref;       // contagem de quantas vezes o filme foi citado (usado na lista geral)
+    elem_lista *dado;   
+    tipo_do_bloco tipo; 
+    int cont_ref;      
     struct listabloco *prox, *ant;
 } ListaBloco;
 
