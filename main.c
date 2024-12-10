@@ -24,7 +24,7 @@ int main()
 
     switch (opcao)
     {
-    case 1:
+    case 1: // cadastra um novo usuário no sistema
       criar_cadastro(arv_sistema, &erro);
       if (erro == SUCESSO)
       {
@@ -39,7 +39,7 @@ int main()
       limpar_tela();
       break;
 
-    case 2:
+    case 2: // lista todos os usuários cadastrados no sistema
       if (arvore_vazia(arv_sistema))
       {
         printf("Não há usuários cadastrados no sistema");
@@ -73,35 +73,35 @@ int main()
       limpar_tela();
       break;
 
-    case 6:
+    case 6: // recomenda um colega com base na similaridade de gostos
       recomendar_colega(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
 
-    case 7:
+    case 7:  // recomenda um colega com base na diferença de gostos
       recomendar_colega_oposto(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
 
-    case 8:
+    case 8: // exporta os dados para um arquivo texto
       exportar_dados(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
 
-    case 9:
+    case 9: // exibe dados técnicos da árvore
       exibir_dados_arvore(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
       break;
 
-    case 10:
+    case 10: // remove um usuário do sistema
       remover_usuario(arv_sistema, &erro);
       printf("Aperte uma tecla para continuar!");
       getchar();
@@ -120,18 +120,18 @@ int main()
       limpar_tela();
       break;
 
-    case 0:
+    case 0: // sair do sistema
       printf("\nSaindo do sistema. Até mais!\n");
       break;
 
-    default:
+    default: // opção inválida
       printf("\nOpção inválida! Tente novamente.\n");
       printf("Aperte uma tecla para continuar!");
       getchar();
       limpar_tela();
     }
   } while (opcao != 0);
-
+  // Liberando a memória alocada para a árvore
   arvore_libera(arv_sistema->raiz, &erro);
   if (erro != SUCESSO)
   {

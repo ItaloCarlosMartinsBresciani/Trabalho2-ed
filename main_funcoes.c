@@ -178,7 +178,7 @@ void auxiliar_cadastro(Arvore *arv_sist, Lista *l_ord, tipo_erro *erro)
         
     }while(i < total_filmes);
 }
-
+// Função que cadastra um novo usuário no sistema
 void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o n_usp já existe
 {
     *erro = SUCESSO;
@@ -272,7 +272,7 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
 
     arvore_inserir(arv_sist, &arv_sist->raiz, nome_copia, &n_usp, l_ord, erro);
 }
-
+// Função que lista os nomes de todos os alunos cadastrados no sistema
 void listar_alunos(no *raiz, tipo_erro *erro)
 { // listagem de nomes de alunos e N-usp - percurso em ordem
     setlocale(LC_ALL, "Portuguese");
@@ -426,7 +426,7 @@ void listar_filmes(Lista *lista_arv, tipo_erro *erro)
         printf("Listagem completa!\n");
     }
 }
-
+// Função que busca um filme na lista geral e informa quantas vezes ele foi mencionado
 void buscar_filme(Arvore *arv_sist, tipo_erro *erro)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -581,7 +581,7 @@ void percorrer_arvore_oposto(no *raiz, int *vetor_ref, int *maior_distancia, no 
     percorrer_arvore_oposto(raiz->esq, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
     percorrer_arvore_oposto(raiz->dir, vetor_ref, maior_distancia, menos_proximo, usuario_atual);
 }
-
+// Função principal para recomendar colega menos proximo
 void recomendar_colega_oposto(Arvore *arv_sist, tipo_erro *erro)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -620,7 +620,7 @@ void recomendar_colega_oposto(Arvore *arv_sist, tipo_erro *erro)
         printf("Nenhum colega encontrado.\n");
     }
 }
-
+// Função que exporta os dados do sistema para um arquivo texto
 void exportar_dados(Arvore *arv_sist, tipo_erro *erro)
 {
     FILE *arquivo;
@@ -701,7 +701,7 @@ void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
 
     printf("\n---FIM EXIBIÇÃO DOS DADOS---\n");
 }
-
+// Função que remove um usuário do sistema
 void remover_usuario(Arvore *arv_sist, tipo_erro *erro)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -803,7 +803,7 @@ void mais_mencionado(Lista *lista_arv, tipo_erro *erro)
     }
     printf("%s | Gênero: %s | Menções:%d\n", melhor_filme->dado, generos[melhor_filme->tipo], melhor_filme->cont_ref);
 }
-
+// Função auxiliar para cadastrar filmes
 void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
 {
     setlocale(LC_ALL, "Portuguese");
@@ -856,7 +856,7 @@ void cadastrar_filmes(Arvore *arv_sistema, tipo_erro *erro)
         printf("Cadastro feito com sucesso.\n");
     }
 }
-
+// Função que exibe o menu do sistema
 void exibir_menu()
 {
     setlocale(LC_ALL, "Portuguese");

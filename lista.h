@@ -9,21 +9,21 @@
 typedef char elem_lista;
 typedef int tipo_do_bloco;
 
-#define QUANT 8 // definida a quantidade de tipos que cada bloco pode assumir
-// No caso dos filmes: {1- Ação, 2- Aventura, 3- Comedia, 4 - Drama, 5- Ficcao, 6- Romance, 7- Suspense, 8 - Terror}
+#define QUANT 8 
 
 typedef struct listabloco
 {
     elem_lista *dado;   
     tipo_do_bloco tipo; 
-    tipo_do_bloco cont_ref;  //contador de quantas vezes o filme foi mencionado pelos usuários (usado apenas no lista geral de filmes)   
+    tipo_do_bloco cont_ref;    
     struct listabloco *prox, *ant;
 } ListaBloco;
 
 typedef struct lista
 {
     ListaBloco *inicio;
-    int vetor[QUANT]; // vetor que armazena as quantidades de filmes cadastrados por genero, usado no calculo da distancia euclidiana (similaridade)
+    int vetor[QUANT];    
+                        
 } Lista;
 
 //  Inicializar uma nova lista
