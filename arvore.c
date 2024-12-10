@@ -65,9 +65,6 @@ int alturaArvore(no *raiz)
     return 1 + (alturaEsquerda > alturaDireita ? alturaEsquerda : alturaDireita);
 }
 
-// lista _init do usuário na main
-// lista_push adiciona o listabloco com o nome do filme e genero na lista,  na main
-// lista_push adiciona o listabloco com o nome do filme e genero na lista geral,  na main
 
 void arvore_inserir(Arvore *a, no **p, elem_arv *x, elem_chave *chave, Lista *l_ord, tipo_erro *erro)
 {
@@ -119,8 +116,6 @@ no *arvore_busca_maior(no **p, tipo_erro *erro)
     return aux;
 }
 
-// antes de remover, precisa verificar lista geral de filmes
-// liberar lista do usuario
 
 void arvore_remover(Arvore *a, no **p, elem_chave *x, tipo_erro *erro)
 {
@@ -209,7 +204,7 @@ void arvore_libera(no *raiz, tipo_erro *erro) {
     free(raiz);
 }
 
-// colocar no arquivo vai ser feito na main
+
 
 void arvore_print(no *raiz, tipo_erro *erro)
 {

@@ -5,7 +5,7 @@
 #include <stdbool.h>
 #include "erro.h"
 
-// Define o tipo "elem_lista" como char
+
 typedef char elem_lista;
 typedef int tipo_do_bloco;
 
@@ -16,15 +16,14 @@ typedef struct listabloco
 {
     elem_lista *dado;   
     tipo_do_bloco tipo; 
-    int cont_ref;      
+    tipo_do_bloco cont_ref;  //contador de quantas vezes o filme foi mencionado pelos usuários (usado apenas no lista geral de filmes)   
     struct listabloco *prox, *ant;
 } ListaBloco;
 
 typedef struct lista
 {
     ListaBloco *inicio;
-    //ListaBloco *fim;
-    int vetor[QUANT]; // vetor que armazena as quantidades de filmes cadastrados por genero
+    int vetor[QUANT]; // vetor que armazena as quantidades de filmes cadastrados por genero, usado no calculo da distancia euclidiana (similaridade)
 } Lista;
 
 //  Inicializar uma nova lista

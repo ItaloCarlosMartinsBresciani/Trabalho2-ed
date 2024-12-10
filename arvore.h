@@ -8,16 +8,15 @@ typedef int elem_chave;
 
 typedef struct no {
     elem_arv *dado; 
-    elem_chave chave; // chave de busca
-    Lista *lista_ord; // Lista ordenada
+    elem_chave chave; // chave de busca (N-USP)
+    Lista *lista_ord; // Lista ordenada (filmes favoritos do usuário)
     struct no *esq, *dir; // Sub-árvores esquerda e direita
-    //int maiorDiferencaAltura;
 } no;
 
 // Estrutura para armazenar dados da árvore
 typedef struct Arvore {
     int totalNos; // Total de nós da árvore
-    Lista *Lista_Arv; //lista ligada à árvore
+    Lista *Lista_Arv; //lista geral de filmes ligada à árvore
     no *raiz;
 }Arvore;
 
@@ -35,10 +34,11 @@ void arvore_remover(Arvore *a, no **p, elem_chave *x, tipo_erro *erro);
 void arvore_libera(no *raiz, tipo_erro *erro);
 // Imprimir árvore
 void arvore_print(no *raiz, tipo_erro *erro);
-
+// Função que busca o maior nó em uma árvore binária, dado um ponteiro para o ponteiro da raiz
 no* arvore_busca_maior(no **p, tipo_erro *erro);
-
+// Função que calcula a altura de uma árvore binária, dado o ponteiro para a raiz
 int alturaArvore(no *raiz);
+
 
 
 #endif
