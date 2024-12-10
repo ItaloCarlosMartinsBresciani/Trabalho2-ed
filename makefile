@@ -2,7 +2,7 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 OBJ = arvore.o lista.o main_funcoes.o main.o
-TARGET = programa
+TARGET = sistema_cinesup
 
 # Detecta o sistema operacional
 ifeq ($(OS),Windows_NT)
