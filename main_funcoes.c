@@ -219,9 +219,9 @@ void criar_cadastro(Arvore *arv_sist, tipo_erro *erro) // tem que verificar se o
             }
         }
 
-        if (!is_valid || strlen(n_usp_str) == 0)
+        if (!is_valid || strlen(n_usp_str) == 0 || atoi(n_usp_str) < 0)
         {
-            printf("Número USP inválido. Certifique-se de usar apenas números.\n");
+            printf("Número USP inválido. Certifique-se de usar apenas números maiores ou igual a zero.\n");
             printf("Pressione ENTER para tentar novamente.\n");
             getchar(); // Aguarda o Enter do usuário
         }
@@ -694,14 +694,10 @@ void exibir_dados_arvore(Arvore *arv_sist, tipo_erro *erro)
     getchar(); // Limpa o buffer do teclado
 
     no *aux = arvore_busca(arv_sist->raiz, &n_usp, erro);
-    if (alturaArvore(aux) == 0)
-    {
-        printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux));
-    }
-    else
-    {
-        printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, alturaArvore(aux) - 1);
-    }
+    int maior_altura_dir = alturaArvore(aux->dir);
+    int maior_altura_esq = alturaArvore(aux->esq);
+    int diferenca = abs(maior_altura_dir - maior_altura_esq);
+    printf("Maior diferença entre alturas que existe entre as sub-árvores do nó com N-USP %d: %d\n", n_usp, diferenca);
 
     printf("\n---FIM EXIBIÇÃO DOS DADOS---\n");
 }
